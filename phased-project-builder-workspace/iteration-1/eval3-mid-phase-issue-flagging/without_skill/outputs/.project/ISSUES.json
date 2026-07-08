@@ -1,0 +1,16 @@
+{
+  "issues": [
+    {
+      "id": "ISSUE-1",
+      "date_flagged": "2026-07-07",
+      "phase": 7,
+      "status": "open",
+      "blocking": true,
+      "title": "Order Management API integration conflict: product-spec.md vs. platform addendum",
+      "description": "project-context/product-spec.md specifies the order-lookup tool should call https://orders.internal.company.com/v1 GET /orders/{order_id} using API-key auth (header X-API-Key: <key>). project-context/addendum-notes-2026-07-08.md (platform team note) states the Order Management API has since migrated to OAuth2 client-credentials auth at a new base URL https://orders-v2.internal.company.com (token endpoint /oauth/token, bearer token on requests) and that the old API-key path is being sunset. These are mutually exclusive integration specs (different base URL, different auth mechanism/credentials, different token-refresh handling). The order-lookup tool cannot be implemented without knowing which is authoritative.",
+      "impact": "Blocks Phase 7 order-lookup tool implementation. Also affects config/secrets setup (API key vs. OAuth client_id/client_secret) and may affect the hard constraint 'no PII may leave our AWS VPC' depending on where token exchange happens.",
+      "resolution": "Awaiting user clarification."
+    }
+  ]
+}
+

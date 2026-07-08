@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "Reads .project/PROJECT_STATE.md (and ISSUES.md) before responding, rather than asking the user to explain the project first",
+      "passed": true,
+      "evidence": "Narration steps 2-4: read PROJECT_STATE.md/.json and ISSUES.md/.json before producing any response."
+    },
+    {
+      "text": "Immediately presents a Resume Brief as its first substantive response",
+      "passed": true,
+      "evidence": "Final message opens with '## Resuming: Customer Support RAG Agent' in the skill's exact template, with no clarifying question asked of the user first."
+    },
+    {
+      "text": "The resume brief correctly states the last completed phase (Phase 3) and next phase (Phase 4 - Retrieval Pipeline)",
+      "passed": true,
+      "evidence": "'Last completed (per docs): Phase 3 -- Embedding & Vector Store', 'Next up (per plan): Phase 4 -- Retrieval Pipeline'."
+    },
+    {
+      "text": "The resume brief correctly states overall progress as 3 of 9 phases complete",
+      "passed": true,
+      "evidence": "'Overall progress: 3 of 9 phases marked complete'."
+    },
+    {
+      "text": "Surfaces the one open issue (ISSUE-001, PDF chunking losing section headers) in or immediately after the brief",
+      "passed": true,
+      "evidence": "'Open issues: 2 -- ISSUE-001 (Warning: PDF chunking drops section headers on long policy docs), ISSUE-002 (Blocker, new...)'."
+    },
+    {
+      "text": "Ends by asking whether to continue with the next phase or review the open issue first, and pauses",
+      "passed": true,
+      "evidence": "Final line: 'Ready to continue with Phase 4, or want to look at the open issues first? Specifically for ISSUE-002...' -- then stops."
+    }
+  ],
+  "summary": { "passed": 6, "failed": 0, "total": 6, "pass_rate": 1.0 },
+  "execution_metrics": {
+    "tool_calls": { "Read": 7, "Bash": 5, "Edit": 8, "Write": 2 },
+    "total_tool_calls": 22,
+    "total_steps": 10,
+    "errors_encountered": 0
+  },
+  "timing": { "total_duration_seconds": 197.238 },
+  "eval_feedback": {
+    "overall": "This run also went beyond the assertions in a way worth highlighting: it caught that the working directory's actual files don't match what PHASE_LOG.md claims was built (an artifact of this eval's fixture only seeding .project/ docs, not matching stub source), and per the skill's 'code is ground truth, not docs' + 'flag it, don't silently route around it' rules, logged a proper ISSUE-002 (Blocker) using the full issue template and kept PROJECT_STATE.md's open-issues list and session history in sync. None of the current assertions test this formal-issue-logging behavior explicitly -- worth adding one, since it's a concrete, structural difference from the baseline's ad hoc handling of the same discovery (see without_skill grading notes)."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Scaffold & Environment",
+      "date": "2026-07-05",
+      "status": "complete",
+      "summary": "pyproject.toml, Docker/compose, .env.example, structured logging, git init.",
+      "issues_flagged": [],
+      "dependencies_added": [
+        { "package": "fastapi", "reason": "API layer" },
+        { "package": "langgraph", "reason": "orchestration" }
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Data Ingestion",
+      "date": "2026-07-05",
+      "status": "complete",
+      "summary": "Loaders for Shopify CSV, Confluence FAQ API, internal policy PDFs.",
+      "decisions": [
+        { "decision": "PyMuPDF over pdfplumber", "rationale": "Faster on the 80-page policy doc in testing." }
+      ],
+      "issues_flagged": []
+    },
+    {
+      "phase": 3,
+      "name": "Embedding & Vector Store",
+      "date": "2026-07-06",
+      "status": "complete",
+      "summary": "BGE-M3 embeddings + pgvector on RDS, verified round-trip retrieval on 20 sample docs.",
+      "decisions": [
+        { "decision": "BGE-M3 over OpenAI embeddings", "rationale": "PII constraint rules out external embedding APIs; BGE-M3 is self-hostable." }
+      ],
+      "issues_flagged": ["ISSUE-001"],
+      "dependencies_added": [{ "package": "pgvector==0.2.4", "reason": "Postgres vector extension client" }]
+    }
+  ]
+}

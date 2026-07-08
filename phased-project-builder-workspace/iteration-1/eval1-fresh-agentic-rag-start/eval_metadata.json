@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "fresh-agentic-rag-start",
+  "prompt": "I've dropped our product spec and architecture notes for the customer support RAG agent into project-context/. Use phased-project-builder to get this started.",
+  "assertions": [
+    "Produces a Context Summary before any phase plan or code, including project name, project type, one-sentence core goal, key requirements, and tech stack signals drawn from the context files",
+    "Correctly surfaces the hard PII/VPC constraint from product-spec.md (no third-party APIs may process raw customer data outside the VPC) as either a stated requirement or a blocker/assumption",
+    "Proposes a phase-by-phase build plan (multiple discrete phases, each with a goal and deliverables) rather than one big undifferentiated plan",
+    "Explicitly pauses and asks for the user's approval before writing any code or creating .project/ scaffolding",
+    "Does not create .project/ files or write project source code in this run, since approval was never granted"
+  ]
+}

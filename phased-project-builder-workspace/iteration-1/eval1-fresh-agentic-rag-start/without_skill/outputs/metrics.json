@@ -1,0 +1,13 @@
+{
+  "tool_calls": {
+    "Bash": 3,
+    "Read": 2,
+    "Write": 3
+  },
+  "total_tool_calls": 8,
+  "total_steps": 6,
+  "files_created": [
+    "PROJECT_PLAN.md"
+  ],
+  "errors_encountered": 0
+}

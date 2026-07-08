@@ -1,0 +1,28 @@
+{
+  "issues": [
+    {
+      "id": "ISSUE-001",
+      "title": "PDF chunking loses section headers for long policy documents",
+      "phase": 3,
+      "severity": "Warning",
+      "description": "The chunker splits mid-section on documents over ~40 pages, dropping the header that gives later chunks their context.",
+      "context": "Found while chunking the 80-page policy PDF from project-context/.",
+      "impact": "Retrieval on long documents may return chunks without enough context to be useful standalone.",
+      "suggested_resolution": "Carry the nearest preceding header forward into each chunk's metadata.",
+      "status": "Open",
+      "date": "2026-07-06"
+    },
+    {
+      "id": "ISSUE-002",
+      "title": "Working directory contains no code - documented Phase 1-3 deliverables are missing",
+      "phase": 4,
+      "severity": "Blocker",
+      "description": "PROJECT_STATE and PHASE_LOG report Phases 1-3 complete with specific files created (pyproject.toml, docker-compose.yml, .env.example, src/ingestion/shopify_loader.py, src/ingestion/confluence_loader.py, src/ingestion/pdf_loader.py, src/embeddings/client.py, src/vectorstore/pgvector.py). None of these exist in the working directory. There is also no git repository, no DEPENDENCY_MANIFEST.md/.json, no MODEL_REGISTRY.md/.json, and .project/ADR/ is empty despite two decisions (BGE-M3 over OpenAI; PyMuPDF over pdfplumber) that warrant an ADR.",
+      "context": "Found while re-reading the existing codebase at session start, before trusting that Phase 4 (Retrieval Pipeline) can build on a 'live' Phase 3 vector store and embedding client.",
+      "impact": "Phase 4 depends concretely on Phase 3's vector store and embedding client code. If that code doesn't exist, Phase 4 cannot start from the assumed foundation.",
+      "suggested_resolution": "Ask the user whether the code exists elsewhere (wrong/stale working directory), was lost and needs recreating, or whether Phases 1-3 should be redone using the existing docs as a spec. Do not proceed into Phase 4 until resolved.",
+      "status": "Open",
+      "date": "2026-07-07"
+    }
+  ]
+}

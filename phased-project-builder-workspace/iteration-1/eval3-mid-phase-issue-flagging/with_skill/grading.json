@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "Reads project-context/product-spec.md and project-context/addendum-notes-2026-07-08.md before or while building the order-lookup tool",
+      "passed": true,
+      "evidence": "Step 4 explicitly reads both files 'as part of this (not from memory/summary)' and quotes their contents."
+    },
+    {
+      "text": "Detects the contradiction between the two files (different base URL and different auth mechanism -- API key vs OAuth2)",
+      "passed": true,
+      "evidence": "Step 5: 'These two files describe two different, mutually exclusive integration contracts for the same tool (different base URL, different auth mechanism...)'."
+    },
+    {
+      "text": "Stops rather than silently picking one version of the API details and continuing to build the tool",
+      "passed": true,
+      "evidence": "'_build_http_client()' left explicitly raising NotImplementedError; narration confirms it 'stopped rather than picking a contract' despite the addendum looking more authoritative."
+    },
+    {
+      "text": "Logs an issue entry in .project/ISSUES.md (and ISSUES.json) following the ISSUE-N template (severity, description, context, impact, suggested resolution)",
+      "passed": true,
+      "evidence": "Step 6: 'Appended ISSUE-001 (Severity: Blocker) to .project/ISSUES.md and .project/ISSUES.json, describing the conflict, context, impact, and a suggested resolution'."
+    },
+    {
+      "text": "Asks the user how to proceed rather than resolving the contradiction unilaterally",
+      "passed": true,
+      "evidence": "Final message: 'Can you confirm: should the order-lookup tool use the OAuth2 client-credentials contract... or is there a reason to stick with the original API-key contract?'"
+    }
+  ],
+  "summary": { "passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0 },
+  "execution_metrics": {
+    "tool_calls": { "Read": 10, "Bash": 5, "Write": 5, "Edit": 6 },
+    "total_tool_calls": 26,
+    "total_steps": 6,
+    "errors_encountered": 0
+  },
+  "timing": { "total_duration_seconds": 365.255 },
+  "eval_feedback": {
+    "overall": "Went beyond the assertions in two ways worth keeping: (1) built the parts of order_lookup.py that don't depend on the disputed detail (validation, response shape, error taxonomy, audit logging) rather than stopping cold, following the phase-planning-guide's 'narrow, testable contract' pattern; (2) noticed PHASE_LOG.json didn't exist yet and created it to restore the 'md and json stay in sync' guarantee, which is exactly the hybrid-documentation discipline the skill is meant to enforce. Baseline (without_skill) caught the same contradiction but wrote zero tool code and didn't address the missing JSON sidecar."
+  }
+}

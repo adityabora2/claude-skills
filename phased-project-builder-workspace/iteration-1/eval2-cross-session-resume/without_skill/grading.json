@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "Reads .project/PROJECT_STATE.md (and ISSUES.md) before responding, rather than asking the user to explain the project first",
+      "passed": true,
+      "evidence": "Steps 1-4: read PROJECT_STATE.md, PHASE_LOG.md, ISSUES.md, and the JSON mirrors before responding."
+    },
+    {
+      "text": "Immediately presents a Resume Brief as its first substantive response",
+      "passed": true,
+      "evidence": "Final message opens by summarizing project state and next phase without asking the user anything first -- functionally a resume brief, though not in the skill's structured template (no 'Session #' field, no labeled sections)."
+    },
+    {
+      "text": "The resume brief correctly states the last completed phase (Phase 3) and next phase (Phase 4 - Retrieval Pipeline)",
+      "passed": true,
+      "evidence": "'Phases 1-3 ... are logged complete, and the plan has us starting Phase 4: Retrieval Pipeline next.'"
+    },
+    {
+      "text": "The resume brief correctly states overall progress as 3 of 9 phases complete",
+      "passed": false,
+      "evidence": "The message never states the total phase count or a '3 of 9' fraction anywhere -- it lists Phases 1-3 as complete but doesn't convey overall progress against the full 9-phase plan."
+    },
+    {
+      "text": "Surfaces the one open issue (ISSUE-001, PDF chunking losing section headers) in or immediately after the brief",
+      "passed": true,
+      "evidence": "'There's also one open warning, ISSUE-001 (PDF chunker drops section headers on long policy docs over ~40 pages), still unresolved from Phase 3.'"
+    },
+    {
+      "text": "Ends by asking whether to continue with the next phase or review the open issue first, and pauses",
+      "passed": true,
+      "evidence": "Ends with 3 numbered options asking the user how to resolve the missing-code discrepancy, then stops -- functionally equivalent pause, though framed around the discovered problem rather than 'continue phase 4 vs review issue'."
+    }
+  ],
+  "summary": { "passed": 5, "failed": 1, "total": 6, "pass_rate": 0.8333 },
+  "execution_metrics": {
+    "tool_calls": { "Bash": 5, "Read": 6, "Write": 2 },
+    "total_tool_calls": 13,
+    "total_steps": 7,
+    "errors_encountered": 0
+  },
+  "timing": { "total_duration_seconds": 89.241 },
+  "eval_feedback": {
+    "overall": "Notable structural gap vs with_skill: this run narrated the docs/code mismatch to the user in prose but never created a formal issue entry in ISSUES.md/json for it, and never updated PROJECT_STATE's open-issues list or session history to reflect the discovery. If this session ended here, the next session (with or without the skill) would have no persisted record that this problem was ever found -- it would have to be rediscovered from scratch. That's the concrete cost of not having a structured, mandatory doc-update step."
+  }
+}

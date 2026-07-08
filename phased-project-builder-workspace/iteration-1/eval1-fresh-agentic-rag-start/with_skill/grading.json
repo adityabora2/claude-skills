@@ -1,0 +1,37 @@
+{
+  "expectations": [
+    {
+      "text": "Produces a Context Summary before any phase plan or code, including project name, project type, one-sentence core goal, key requirements, and tech stack signals drawn from the context files",
+      "passed": true,
+      "evidence": "Transcript lines 24-51: full Context Summary with Project Name, Project Type, Core Goal, Key Requirements, Tech Stack Signals, and an Open Questions section, all sourced from the two context files."
+    },
+    {
+      "text": "Correctly surfaces the hard PII/VPC constraint from product-spec.md as either a stated requirement or a blocker/assumption",
+      "passed": true,
+      "evidence": "Key Requirements lists 'no PII leaves AWS VPC'; the PII constraint also drives the embedding-model assumption ('open-source model... given the PII/self-hosted constraint')."
+    },
+    {
+      "text": "Proposes a phase-by-phase build plan (multiple discrete phases, each with a goal and deliverables) rather than one big undifferentiated plan",
+      "passed": true,
+      "evidence": "9 distinct phases (lines 55-100), each with Goal/Deliverables/Depends-on."
+    },
+    {
+      "text": "Explicitly pauses and asks for the user's approval before writing any code or creating .project/ scaffolding",
+      "passed": true,
+      "evidence": "Line 104: 'let me know your answers... or say approved to start Phase 1'; step 8 in narration confirms it stopped per the skill's pause instruction."
+    },
+    {
+      "text": "Does not create .project/ files or write project source code in this run, since approval was never granted",
+      "passed": true,
+      "evidence": "metrics.json shows 0 files_created; narration step 8 explicitly confirms no .project/, git repo, or application code was created."
+    }
+  ],
+  "summary": { "passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0 },
+  "execution_metrics": {
+    "tool_calls": { "Read": 5, "Bash": 2 },
+    "total_tool_calls": 7,
+    "total_steps": 8,
+    "errors_encountered": 0
+  },
+  "timing": { "total_duration_seconds": 137.599 }
+}

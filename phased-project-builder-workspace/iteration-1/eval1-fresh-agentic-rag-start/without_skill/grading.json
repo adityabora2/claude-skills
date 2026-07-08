@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "Produces a Context Summary before any phase plan or code, including project name, project type, one-sentence core goal, key requirements, and tech stack signals drawn from the context files",
+      "passed": true,
+      "evidence": "Transcript steps 2-3 extract goal, scale/requirements, data sources, capabilities, constraints, and tech signals, though not laid out under a fixed 'Context Summary' header -- delivered inline in the final message and PROJECT_PLAN.md instead."
+    },
+    {
+      "text": "Correctly surfaces the hard PII/VPC constraint from product-spec.md as either a stated requirement or a blocker/assumption",
+      "passed": true,
+      "evidence": "Step 2 explicitly extracts 'no PII may leave the AWS VPC (rules out third-party embedding/LLM APIs...)' and Phase 6 of its plan is 'observability/logging/compliance -- 90-day retention, PII handling'."
+    },
+    {
+      "text": "Proposes a phase-by-phase build plan (multiple discrete phases, each with a goal and deliverables) rather than one big undifferentiated plan",
+      "passed": true,
+      "evidence": "10-phase PROJECT_PLAN.md (Phase 0-9), each with goal, deliverables, exit criteria per step 5."
+    },
+    {
+      "text": "Explicitly pauses and asks for the user's approval before writing any code or creating .project/ scaffolding",
+      "passed": true,
+      "evidence": "Final message asks the user to confirm 4 open decisions before starting Phase 0 'for real'; no scaffolding attempted."
+    },
+    {
+      "text": "Does not create .project/ files or write project source code in this run, since approval was never granted",
+      "passed": true,
+      "evidence": "metrics.json files_created: only PROJECT_PLAN.md (a plan document, not application code or .project/ scaffolding). No .project/ directory created."
+    }
+  ],
+  "summary": { "passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0 },
+  "execution_metrics": {
+    "tool_calls": { "Bash": 3, "Read": 2, "Write": 3 },
+    "total_tool_calls": 8,
+    "total_steps": 6,
+    "errors_encountered": 0
+  },
+  "timing": { "total_duration_seconds": 137.864 },
+  "eval_feedback": {
+    "overall": "This eval doesn't discriminate well between with_skill and without_skill: baseline Claude is already good at reading specs, drafting a phased plan, and pausing on open questions. The two runs are close in content quality; the with_skill run's main edge is following the exact required Context-Summary/Phase-N template and being aware of the .project/ documentation system it will bootstrap next (not exercised in either run since both stop before approval). Consider a follow-up eval that continues past approval into Phase 1 to actually test the documentation-scaffolding behavior, which the baseline has no equivalent of."
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "skill_name": "phased-project-builder",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "fresh-agentic-rag-start",
+      "prompt": "I've dropped our product spec and architecture notes for the customer support RAG agent into project-context/. Use phased-project-builder to get this started.",
+      "expected_output": "Reads all files in project-context/, produces a Context Summary (goal, requirements, tech stack signals, blockers vs assumptions), proposes a phase-by-phase build plan tailored to an agentic RAG system, and explicitly pauses for approval before writing any code or creating .project/ scaffolding.",
+      "files": [
+        "evals/files/eval1-fresh-agentic-rag-start/project-context/product-spec.md",
+        "evals/files/eval1-fresh-agentic-rag-start/project-context/architecture-notes.md"
+      ],
+      "expectations": [
+        "Produces a Context Summary before any phase plan or code, including project name, project type, one-sentence core goal, key requirements, and tech stack signals drawn from the context files",
+        "Correctly surfaces the hard PII/VPC constraint from product-spec.md (no third-party APIs may process raw customer data outside the VPC) as either a stated requirement or a blocker/assumption",
+        "Proposes a phase-by-phase build plan (multiple discrete phases, each with a goal and deliverables) rather than one big undifferentiated plan",
+        "Explicitly pauses and asks for the user's approval before writing any code or creating .project/ scaffolding",
+        "Does not create .project/ files or write project source code in this run, since approval was never granted"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "cross-session-resume",
+      "prompt": "New chat, continuing the customer support RAG agent project. Use phased-project-builder.",
+      "expected_output": "Detects the existing .project/ state without being told to resume, reads PROJECT_STATE.md and ISSUES.md, and immediately presents a Resume Brief (session number, last completed phase, next phase, open issues, overall progress) before asking what to do next -- it does not ask the user to explain the project first.",
+      "files": [
+        "evals/files/eval2-cross-session-resume/.project/PROJECT_STATE.md",
+        "evals/files/eval2-cross-session-resume/.project/PROJECT_STATE.json",
+        "evals/files/eval2-cross-session-resume/.project/PHASE_LOG.md",
+        "evals/files/eval2-cross-session-resume/.project/PHASE_LOG.json",
+        "evals/files/eval2-cross-session-resume/.project/ISSUES.md",
+        "evals/files/eval2-cross-session-resume/.project/ISSUES.json"
+      ],
+      "expectations": [
+        "Reads .project/PROJECT_STATE.md (and ISSUES.md) before responding, rather than asking the user to explain the project first",
+        "Immediately presents a Resume Brief as its first substantive response",
+        "The resume brief correctly states the last completed phase (Phase 3) and next phase (Phase 4 - Retrieval Pipeline)",
+        "The resume brief correctly states overall progress as 3 of 9 phases complete",
+        "Surfaces the one open issue (ISSUE-001, PDF chunking losing section headers) in or immediately after the brief",
+        "Ends by asking whether to continue with the next phase or review the open issue first, and pauses"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "mid-phase-issue-flagging",
+      "prompt": "Let's move on to Phase 7 (Tools & Sub-agents) -- start with the order-lookup tool. Use phased-project-builder.",
+      "expected_output": "While building the order-lookup tool, notices that project-context/product-spec.md and project-context/addendum-notes-2026-07-08.md give contradictory integration details for the Order Management API (different base URL and auth mechanism). Stops, logs an ISSUE-001 entry in .project/ISSUES.md and .json describing the contradiction, and asks the user how to proceed -- rather than silently picking one version and continuing to build.",
+      "files": [
+        "evals/files/eval3-mid-phase-issue-flagging/.project/PROJECT_STATE.md",
+        "evals/files/eval3-mid-phase-issue-flagging/.project/PROJECT_STATE.json",
+        "evals/files/eval3-mid-phase-issue-flagging/.project/PHASE_LOG.md",
+        "evals/files/eval3-mid-phase-issue-flagging/.project/ISSUES.md",
+        "evals/files/eval3-mid-phase-issue-flagging/.project/ISSUES.json",
+        "evals/files/eval3-mid-phase-issue-flagging/project-context/product-spec.md",
+        "evals/files/eval3-mid-phase-issue-flagging/project-context/addendum-notes-2026-07-08.md"
+      ],
+      "expectations": [
+        "Reads project-context/product-spec.md and project-context/addendum-notes-2026-07-08.md before or while building the order-lookup tool",
+        "Detects the contradiction between the two files (different base URL and different auth mechanism -- API key vs OAuth2)",
+        "Stops rather than silently picking one version of the API details and continuing to build the tool",
+        "Logs an issue entry in .project/ISSUES.md (and ISSUES.json) following the ISSUE-N template (severity, description, context, impact, suggested resolution)",
+        "Asks the user how to proceed rather than resolving the contradiction unilaterally"
+      ]
+    }
+  ]
+}
